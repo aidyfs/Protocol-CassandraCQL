@@ -146,8 +146,9 @@ sub decode { $_[1] }
 # 64-bit integer
 package Protocol::CassandraCQL::Type::BIGINT;
 use base qw( Protocol::CassandraCQL::Type::_integral );
-sub encode { pack   "q>", $_[1] }
-sub decode { unpack "q>", $_[1] }
+use Math::Int64 qw(:native_if_available int64_to_net net_to_int64);
+sub encode { int64_to_net $_[1] }
+sub decode { net_to_int64 $_[1] }
 
 # blob
 package Protocol::CassandraCQL::Type::BLOB;
@@ -217,8 +218,9 @@ use base qw( Protocol::CassandraCQL::Type::VARCHAR );
 # miliseconds since UNIX epoch as 64bit uint
 package Protocol::CassandraCQL::Type::TIMESTAMP;
 use base qw( Protocol::CassandraCQL::Type::_integral );
-sub encode {  pack   "Q>", ($_[1] * 1000) }
-sub decode { (unpack "Q>", $_[1]) / 1000  }
+use Math::Int64 qw(:native_if_available uint64_to_net net_to_uint64);
+sub encode {  uint64_to_net ($_[1] * 1000) }
+sub decode { (net_to_uint64 $_[1]) / 1000  }
 
 # UUID is just a hex string - accept 32 hex digits, hypens optional
 package Protocol::CassandraCQL::Type::UUID;

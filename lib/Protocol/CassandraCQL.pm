@@ -280,10 +280,6 @@ sub typename
 Reimplement L<Protocol::CassandraCQL::Frame> in XS code for better
 performance.
 
-=item *
-
-Support 64bit-challenged perls by using C<Math::BigInt> for 64bit values
-
 =back
 
 =cut
